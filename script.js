@@ -30,14 +30,16 @@ const questionsElement = document.getElementById("questions");
 const submitButton = document.getElementById("submit");
 const scoreElement = document.getElementById("score");
 
-// Load user progress from sessionStorage
+// Load user progress from sessionStorage or initialize to empty object
 const userAnswers = JSON.parse(sessionStorage.getItem("progress")) || {};
 
+// Function to render the quiz questions and choices
 function renderQuestions() {
   questionsElement.innerHTML = ''; // Clear any existing content
 
   questions.forEach((question, questionIndex) => {
     const questionElement = document.createElement("div");
+
     const questionText = document.createElement("p");
     questionText.textContent = question.question;
     questionElement.appendChild(questionText);
@@ -49,10 +51,12 @@ function renderQuestions() {
       choiceElement.setAttribute("name", `question-${questionIndex}`);
       choiceElement.setAttribute("value", choice);
 
+      // Check the radio button if the user previously selected this choice
       if (userAnswers[questionIndex] === choice) {
         choiceElement.checked = true;
       }
 
+      // Save the user's choice to sessionStorage on change
       choiceElement.addEventListener("change", () => {
         userAnswers[questionIndex] = choice;
         sessionStorage.setItem("progress", JSON.stringify(userAnswers));
@@ -67,6 +71,7 @@ function renderQuestions() {
   });
 }
 
+// Event listener for the submit button to calculate and display the score
 submitButton.addEventListener("click", () => {
   let score = 0;
   questions.forEach((question, index) => {
@@ -79,13 +84,14 @@ submitButton.addEventListener("click", () => {
   scoreElement.textContent = `Your score is ${score} out of ${questions.length}.`;
 });
 
+// Ensure the questions are rendered on page load and load the score if it exists
 window.addEventListener("load", () => {
   const storedScore = localStorage.getItem("score");
   if (storedScore !== null) {
     scoreElement.textContent = `Your score is ${storedScore} out of ${questions.length}.`;
   }
-  renderQuestions(); // Ensure questions are rendered on load
+  renderQuestions(); // Render the questions on page load
 });
 
+// Initial render of the questions
 renderQuestions();
-
