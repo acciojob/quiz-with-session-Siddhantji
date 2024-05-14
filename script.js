@@ -53,7 +53,7 @@ function renderQuestions() {
 
       // Check the radio button if the user previously selected this choice
       if (userAnswers[questionIndex] === choice) {
-        choiceElement.checked = true;
+        choiceElement.setAttribute('checked', 'true');
         console.log(`Restoring choice for question ${questionIndex}: ${choice}`);
       }
 
