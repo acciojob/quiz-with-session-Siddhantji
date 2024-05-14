@@ -32,8 +32,8 @@ const scoreElement = document.getElementById("score");
 
 // Load user progress from sessionStorage or initialize to empty object
 const userAnswers = JSON.parse(sessionStorage.getItem("progress")) || {};
+console.log("Loaded userAnswers from sessionStorage:", userAnswers);
 
-// Function to render the quiz questions and choices
 function renderQuestions() {
   questionsElement.innerHTML = ''; // Clear any existing content
 
@@ -54,12 +54,14 @@ function renderQuestions() {
       // Check the radio button if the user previously selected this choice
       if (userAnswers[questionIndex] === choice) {
         choiceElement.checked = true;
+        console.log(`Restoring choice for question ${questionIndex}: ${choice}`);
       }
 
       // Save the user's choice to sessionStorage on change
       choiceElement.addEventListener("change", () => {
         userAnswers[questionIndex] = choice;
         sessionStorage.setItem("progress", JSON.stringify(userAnswers));
+        console.log("Updated userAnswers in sessionStorage:", userAnswers);
       });
 
       choiceLabel.appendChild(choiceElement);
@@ -82,6 +84,7 @@ submitButton.addEventListener("click", () => {
 
   localStorage.setItem("score", score);
   scoreElement.textContent = `Your score is ${score} out of ${questions.length}.`;
+  console.log("Score stored in localStorage:", score);
 });
 
 // Ensure the questions are rendered on page load and load the score if it exists
@@ -89,6 +92,7 @@ window.addEventListener("load", () => {
   const storedScore = localStorage.getItem("score");
   if (storedScore !== null) {
     scoreElement.textContent = `Your score is ${storedScore} out of ${questions.length}.`;
+    console.log("Loaded score from localStorage:", storedScore);
   }
   renderQuestions(); // Render the questions on page load
 });
