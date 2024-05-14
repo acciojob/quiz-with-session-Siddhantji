@@ -84,6 +84,8 @@ window.addEventListener("load", () => {
   if (storedScore !== null) {
     scoreElement.textContent = `Your score is ${storedScore} out of ${questions.length}.`;
   }
+  renderQuestions(); // Ensure questions are rendered on load
 });
 
 renderQuestions();
+
